@@ -1,1 +1,4 @@
-[]
+{
+  "hello": { "content": "", "type": "file" },
+  "sub": { "type": "directory", "content": {} }
+}
