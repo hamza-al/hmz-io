@@ -23,6 +23,7 @@ class System():
         a_file.close()
         self.path  ='/'
 
+
     def add(self,fileName,content=""):
         if fileName in self.files:
             print("File already exists")
@@ -42,10 +43,11 @@ class System():
         for i in self.currPath:
             active = active[i]['content']
 
-        if fileName not in self.files or self.files[fileName]['type'] != "file":
+        if fileName not in active or active[fileName]['type'] != "file":
             print("File does not exist")
         else:
-            del self.files[fileName]
+            del active[fileName]
+
             a_file = open("files.json","w")
             json.dump(self.files,a_file)
             a_file.close()
