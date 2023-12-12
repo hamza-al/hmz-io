@@ -1,4 +1,5 @@
 {
   "hello": { "content": "", "type": "file" },
-  "sub": { "type": "directory", "content": {} }
+  "sub": { "type": "directory", "content": {} },
+  "Ok": { "content": "", "type": "file" }
 }

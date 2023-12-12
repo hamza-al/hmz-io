@@ -102,3 +102,5 @@ class System():
 
 
 trial = System()
+trial.add("Ok")
+trial.newdir("hello")
