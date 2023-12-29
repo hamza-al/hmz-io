@@ -1,5 +1,19 @@
 {
-  "hello": { "content": "", "type": "file" },
-  "sub": { "type": "directory", "content": {} },
-  "Ok": { "content": "", "type": "file" }
+  "content": {
+    "sub": {
+      "type": "Folder",
+      "content": {
+        "ok": { "content": "", "type": "File" },
+        "ok_folder": {
+          "content": {
+            "ok_inner_folder": { "content": "", "type": "File" },
+            "ok": { "content": "", "type": "File" }
+          },
+          "type": "Folder"
+        }
+      }
+    },
+    "ok": { "content": "", "type": "File" },
+    "ok_folder": { "content": {}, "type": "Folder" }
+  }
 }

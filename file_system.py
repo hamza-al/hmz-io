@@ -1,4 +1,5 @@
 """
+
 SAMPLE JSON OPEN EDIT AND CLOSE:
 
     a_file = open("wordle.json", "r")
@@ -18,89 +19,58 @@ class System():
     def __init__(self) -> None:
         a_file = open("files.json", "r")
         self.files = json.load(a_file)
-        
         self.currPath = []
-        a_file.close()
-        self.path  ='/'
-
-
-    def add(self,fileName,content=""):
-        if fileName in self.files:
-            print("File already exists")
-        else:
-            self.files[fileName] = {
-                'content': content,
-                'type': 'file'
-            }
-            
-
-            a_file = open("files.json","w")
-            json.dump(self.files,a_file)
-            a_file.close()
-
-    def delete(self,fileName):
-        active = self.files
-        for i in self.currPath:
-            active = active[i]['content']
-
-        if fileName not in active or active[fileName]['type'] != "file":
-            print("File does not exist")
-        else:
-            del active[fileName]
-
-            a_file = open("files.json","w")
-            json.dump(self.files,a_file)
-            a_file.close()
-    def goto(self,dirName):
-        if dirName not in self.files or self.files[dirName]['type'] != "directory":
-            print("Folder does not exist")
-        else:
-            self.currPath.append(dirName)
-            self.path = '/' + '/'.join(self.currPath)
-
-
-    def back(self):
-        pass
-    def newdir(self,dirName):
-        if dirName in self.files:
-            print("Folder already exists")
-        else:
-            self.files[dirName] = {
-                'type': 'directory',
-                'content': {}
-            }
-
-            a_file = open("files.json","w")
-            json.dump(self.files,a_file)
-            a_file.close()
-    def deldir(self,dirName):
-        if dirName not in self.files or self.files[dirName]['type'] != "directory":
-            print("Folder does not exist")
-        else:
-            del self.files[dirName]
-            a_file = open("files.json","w")
-            json.dump(self.files,a_file)
-            a_file.close()
-    def show(self,fileName):
-        if fileName not in self.files or self.files[fileName]['type'] != "file":
-            print("File does not exist")
-        else:
-            print( self.files[fileName]['content'])
-    def run(self):
-        commands = {
-        'add':"",
-        'del':"",
-        'goto':"",
-        'back':"",
-        'newdir':"",
-        'deldir':"",
-        'show':""
-        }   
-        
     
+    def addFile(self,name,path,tree,content=''):
+        if len(path) == 0:
+            if name in tree['content'] and tree['content'][name]['type'] == 'File':
+                print("File already exists")
+            else:
+                tree['content'][name] = {"content":content,'type':"File"}
+        elif len(path) == 1:
+            if name in tree['content'][path[0]]['content'] and tree['content'][path[0]]['content'][name]['type'] == 'File':
+                print("File already exists")
+            else:
+                tree['content'][path[0]]['content'][name] = {"content":content,'type':"File"}
+   
+        else:
+            self.addFile(name=name,content=content,path=path[1:],tree=tree['content'][path[0]])
+        a_file = open("files.json", "w")
+        json.dump(self.files, a_file)
+        a_file.close()
+    def addFolder(self,name,path,tree):
+        if len(path) == 0:
+            if name in tree['content'] and tree['content'][name]['type'] == 'Folder':
+                print("Folder already exists")
+            else:
+                tree['content'][name] = {"content":{},'type':"Folder"}
+        elif len(path) == 1:
+            if name in tree['content'][path[0]]['content'] and tree['content'][path[0]]['content'][name]['type'] == 'Folder':
+                print("Folder already exists")
+            else:
+                tree['content'][path[0]]['content'][name] = {"content":{},'type':"Folder"}
+   
+        else:
+            self.addFile(name=name,path=path[1:],tree=tree['content'][path[0]])
+        a_file = open("files.json", "w")
+        json.dump(self.files, a_file)
+        a_file.close()
+    def showFiles(self,path,tree):
+        if len(path) == 0:
+            for i in tree['content'].keys():
+                print(f'{i}: {tree["content"][i]["type"]}')
+        elif len(path) == 1:
+            print(f'{i}: {tree["content"][i]["type"]}')
 
 
 
 trial = System()
-trial.add("Ok")
-trial.newdir("hello")
+trial.showFiles(trial.currPath,trial.files)
+
+# print(f'After {trial.files}')
+# trial.currPath.append('sub')
+# trial.addFile('ok',trial.currPath,trial.files)
+# trial.addFolder('ok_folder',trial.currPath,trial.files)
+# trial.currPath.append('ok_folder')
+# trial.addFolder('ok_inner_folder',trial.currPath,trial.files)
+# trial.addFile('ok',trial.currPath,trial.files)
