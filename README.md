@@ -38,9 +38,3 @@ Creates a new file with a given name
   - makedir \<dirname>
 - errors:
   - directory with that name exists
-### back
-Sets current directory to the parent of the current directory
-- usage 
-  - back
-- errors:
-  - can not use while in root 
