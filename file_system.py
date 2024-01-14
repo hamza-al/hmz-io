@@ -78,11 +78,63 @@ class System():
                 else:
                     self.currPath.append(paths[i])
     def delFile(self,file):
-        
         pass
+    def run(self):
+        while True:
+            cmd = input( f" ~{'/'.join(self.currPath)} " )
+            if cmd in ['q','Q','quit']:
+                break
+            else:
+                parts = cmd.split(' ')
+                commands = [
+                    'newfile',
+                    'newdir',
+                    'goto',
+                    'show',
+                ]
+                
+                if parts[0] not in commands:
+                    print('Invalid command')
+                else:
+                    if parts[0] == 'newfile':
+                        if len(parts) > 3 or len(parts) <  2:
+                            print("Invalid usage of command")
+                        else:
+                            if len(parts) == 2:
+                                content = ''
+                            else:
+                                content = parts[2]
+                            self.addFile(parts[1],self.currPath,self.files,content)
+                    elif parts[0] == 'newdir':
+                        if len(parts) != 2:
+                            print("Invalid usage of command")
+                        else:
+                            self.addFolder(parts[1],self.currPath,self.files)
+                    elif parts[0] == 'goto':
+                        if len(parts) != 2:
+                            print("Invalid usage of command")
+                        else:
+                            self.goto(parts[1])
+                    elif parts[0] == 'show':
+                        if len(parts) != 1:
+                            print("Invalid usage of command")
+                        else:
+                            self.showFiles()
+                    
+                    
+
+
+                    
+
+            
+            
+
+
 
     
         
 # active[paths[i]]['type'] != "File"
                     
 trial = System()
+trial.run()
+
