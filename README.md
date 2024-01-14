@@ -14,10 +14,10 @@ HMZ-IO will operate by taking in standard commands into a REPL like simulation t
 
 
 ## Commands
-### add 
+### newfile
 Creates a new file with a given file name
 - usage:
-  - add \<filename>
+  - add \<filename> \<content>(optional)
   - User will be propted to add content to the file (can be left blank)
 ###  del
 Deletes a file with a given file name
@@ -26,14 +26,14 @@ Deletes a file with a given file name
 - errors:
   - file with that filename does not exist
 
-### enter 
-Changes current directory to a specified CHILD directory of the current directory
+### goto 
+Changes current directory to a specified directory 
 - usage:
   - enter \<dirname>
 - errors:
   - directory with that name does not exist
-### makedir 
-Creates a new file with a given name
+### newdir 
+Creates a new directory with a given name
 - usage:
   - makedir \<dirname>
 - errors:
