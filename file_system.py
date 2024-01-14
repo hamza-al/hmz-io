@@ -1,14 +1,3 @@
-"""
-SAMPLE JSON OPEN EDIT AND CLOSE:
-
-    a_file = open("wordle.json", "r")
-    json_object = json.load(a_file)
-    a_file.close()
-    json_object[0] = word
-    a_file = open("wordle.json", "w")
-    json.dump(json_object, a_file)
-    a_file.close()
-"""
 import json 
 class System():
     def __init__(self) -> None:
@@ -119,22 +108,7 @@ class System():
                         if len(parts) != 1:
                             print("Invalid usage of command")
                         else:
-                            self.showFiles()
-                    
-                    
-
-
-                    
-
-            
-            
-
-
-
-    
-        
-# active[paths[i]]['type'] != "File"
-                    
+                            self.showFiles()    
 trial = System()
 trial.run()
 
