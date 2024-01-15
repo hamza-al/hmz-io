@@ -38,3 +38,7 @@ Creates a new directory with a given name
   - makedir \<dirname>
 - errors:
   - directory with that name exists
+### clear
+Clears terminal
+- usage:
+  - clear
