@@ -2,6 +2,7 @@ import json
 import os 
 class System():
     def __init__(self) -> None:
+        self.history = []
         a_file = open("files.json", "r")
         self.files = json.load(a_file)
         self.currPath = []
@@ -76,16 +77,19 @@ class System():
             else:
                 cmd = input( '~ % '  )
             if cmd in ['q','Q','quit']:
-                break
+                break   
             else:
+                
                 parts = cmd.split(' ')
+                parts = list(filter(lambda a: a !="",parts ))
                 commands = {
                     'newfile':"Create new file --usage: newfile <file_name> <file_content> (optional)",
                     'newdir':"Create new directory --usage: newdir <dir_name>",
                     'goto':"Navigate to target directory --usage: goto <dir_name> ",
                     'show':"Show contents of current working directory --usage: show",
                     'clear':"Clear terminal --usage: clear",
-                    'help': "Displays command definition and usage --usage: help",
+                    'help': "Displays command definition and usage --usage: help <command>",
+                    'print': "Displays the content of a file -- usage: print <file)name> "
                 }
                 
                 if parts[0] not in commands:
@@ -118,15 +122,17 @@ class System():
                     elif parts[0] == 'clear':
                         os.system('clear') 
                     elif parts[0] == 'help':
-                        if len(parts) != 2:
+                        if len(parts) > 2:
                             print("Invalid usage of command")
+                        elif len(parts) == 1:
+                                print(commands['help'])
                         else:
-                            
                             if parts[1] not in commands:
                                 print("Invalid command")
                             else:
                                 print(commands[parts[1]])
+
                     
-trial = System()
-trial.run()
+                    
+
 
