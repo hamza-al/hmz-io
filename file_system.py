@@ -1,4 +1,5 @@
-import json 
+import json
+import os 
 class System():
     def __init__(self) -> None:
         a_file = open("files.json", "r")
@@ -70,17 +71,22 @@ class System():
         pass
     def run(self):
         while True:
-            cmd = input( f" ~{'/'.join(self.currPath)} " )
+            if len(self.currPath) > 0:
+                cmd = input( self.currPath[-1] + " % " )
+            else:
+                cmd = input( '~ % '  )
             if cmd in ['q','Q','quit']:
                 break
             else:
                 parts = cmd.split(' ')
-                commands = [
-                    'newfile',
-                    'newdir',
-                    'goto',
-                    'show',
-                ]
+                commands = {
+                    'newfile':"Create new file --usage: newfile <file_name> <file_content> (optional)",
+                    'newdir':"Create new directory --usage: newdir <dir_name>",
+                    'goto':"Navigate to target directory --usage: goto <dir_name> ",
+                    'show':"Show contents of current working directory --usage: show",
+                    'clear':"Clear terminal --usage: clear",
+                    'help': "Displays command definition and usage --usage: help",
+                }
                 
                 if parts[0] not in commands:
                     print('Invalid command')
@@ -108,7 +114,19 @@ class System():
                         if len(parts) != 1:
                             print("Invalid usage of command")
                         else:
-                            self.showFiles()    
+                            self.showFiles()   
+                    elif parts[0] == 'clear':
+                        os.system('clear') 
+                    elif parts[0] == 'help':
+                        if len(parts) != 2:
+                            print("Invalid usage of command")
+                        else:
+                            
+                            if parts[1] not in commands:
+                                print("Invalid command")
+                            else:
+                                print(commands[parts[1]])
+                    
 trial = System()
 trial.run()
 
