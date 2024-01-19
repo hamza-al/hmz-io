@@ -30,40 +30,40 @@ class System():
         return distances
     def addFile(self,name,path,tree,content=''):
         if len(path) == 0:
-            if name+'_file' in tree['content'] and tree['content'][name]['type'] == 'File':
+            if name+'_file' in tree['content'] and tree['content'][name+'_file']['type'] == 'File':
                 print("File already exists")
             else:
                 tree['content'][name+'_file'] = {"content":content,'type':"File"}
         elif len(path) == 1:
-            if name+'_file' in tree['content'][path[0]]['content'] and tree['content'][path[0]]['content'][name]['type'] == 'File':
+            if name+'_file' in tree['content'][path[0]+'_folder']['content'] and tree['content'][path[0]+'_folder']['content'][name+'_file']['type'] == 'File':
                 print("File already exists")
             else:
-                tree['content'][path[0]]['content'][name+'_file'] = {"content":content,'type':"File"}
+                tree['content'][path[0]+'_folder']['content'][name+'_file'] = {"content":content,'type':"File"}
         else:
-            self.addFile(name=name,content=content,path=path[1:],tree=tree['content'][path[0]])
+            self.addFile(name=name,content=content,path=path[1:],tree=tree['content'][path[0]+'_folder'])
         a_file = open("files.json", "w")
         json.dump(self.files, a_file)
         a_file.close()
     def addFolder(self,name,path,tree):
         if len(path) == 0:
-            if name+'_folder' in tree['content'] and tree['content'][name]['type'] == 'Folder':
+            if name+'_folder' in tree['content'] and tree['content'][name+'_folder']['type'] == 'Folder':
                 print("Folder already exists")
             else:
                 tree['content'][name+'_folder'] = {"content":{},'type':"Folder"}
         elif len(path) == 1:
-            if name+'_folder' in tree['content'][path[0]]['content'] and tree['content'][path[0]]['content'][name]['type'] == 'Folder':
+            if name+'_folder' in tree['content'][path[0]+'_folder']['content'] and tree['content'][path[0]+'_folder']['content'][name+"_folder"]['type'] == 'Folder':
                 print("Folder already exists")
             else:
-                tree['content'][path[0]]['content'][name+'_folder'] = {"content":{},'type':"Folder"}
+                tree['content'][path[0]+'_folder']['content'][name+'_folder'] = {"content":{},'type':"Folder"}
         else:
-            self.addFile(name=name,path=path[1:],tree=tree['content'][path[0]])
+            self.addFolder(name=name,path=path[1:],tree=tree['content'][path[0]+'_folder'])
         a_file = open("files.json", "w")
         json.dump(self.files, a_file)
         a_file.close()
     def showFiles(self):
         active = self.files['content']
         for j in self.currPath:
-            active = active[j]['content']
+            active = active[j+'_folder']['content']
         for i in active:
             print(f"Name: {i[:-5] if active[i]['type'] == 'File' else i[:-7]} --- Type: {active[i]['type']} ")
     def goto(self, folder):
@@ -81,8 +81,8 @@ class System():
             else:
                 active = self.files['content']
                 for j in self.currPath:
-                    active = active[j]['content']
-                if paths[i] not in active or active[paths[i]]['type'] != "Folder":
+                    active = active[j+'_folder']['content']
+                if paths[i]+'_folder' not in active or active[paths[i]+'_folder']['type'] != "Folder":
                     print(f'{paths[i]} does not exist in {"/" + "/".join(self.currPath)}')
                 else:
                     self.currPath.append(paths[i])
@@ -93,12 +93,12 @@ class System():
             else:
                 tree['content'].pop(name+'_file')
         elif len(path) == 1:
-            if name+'_file' not in tree['content'][path[0]]['content'] or tree['content'][path[0]]['content'][name+'_file']['type'] != 'File':
+            if name+'_file' not in tree['content'][path[0]+'_folder']['content'] or tree['content'][path[0]+'_folder']['content'][name+'_file']['type'] != 'File':
                 print("File does not exists")
             else:
-                tree['content'][path[0]]['content'].pop(name+'_file')
+                tree['content'][path[0]+'_folder']['content'].pop(name+'_file')
         else:
-            self.addFile(name=name,path=path[1:],tree=tree['content'][path[0]])
+            self.addFile(name=name,path=path[1:],tree=tree['content'][path[0]+'_folder'])
         a_file = open("files.json", "w")
         json.dump(self.files, a_file)
         a_file.close()
@@ -109,12 +109,12 @@ class System():
             else:
                 tree['content'].pop(name+'_folder')
         elif len(path) == 1:
-            if name+'_folder' not in tree['content'][path[0]]['content'] or tree['content'][path[0]]['content'][name+'_folder']['type'] != 'Folder':
+            if name+'_folder' not in tree['content'][path[0]+'_folder']['content'] or tree['content'][path[0]+'_folder']['content'][name+'_folder']['type'] != 'Folder':
                 print("Folder does not exists")
             else:
-                tree['content'][path[0]]['content'].pop(name+'_folder')
+                tree['content'][path[0]+'_folder']['content'].pop(name+'_folder')
         else:
-            self.addFile(name=name,path=path[1:],tree=tree['content'][path[0]])
+            self.addFile(name=name,path=path[1:],tree=tree['content'][path[0]+'_folder'])
         a_file = open("files.json", "w")
         json.dump(self.files, a_file)
         a_file.close()
