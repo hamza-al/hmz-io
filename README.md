@@ -17,15 +17,20 @@ HMZ-IO will operate by taking in standard commands into a REPL like simulation t
 ### newfile
 Creates a new file with a given file name
 - usage:
-  - add \<filename> \<content>(optional)
+  - newfile \<filename> \<content>```(optional)```
   - User will be propted to add content to the file (can be left blank)
-###  del
+###  delfile
 Deletes a file with a given file name
 - usage:
   - del \<filename>
 - errors:
   - file with that filename does not exist
-
+###  deldir
+Deletes a directory with a given name
+- usage:
+  - deldir \<dir_name>
+- errors:
+  - directory with that name does not exist
 ### goto 
 Changes current directory to a specified directory 
 - usage:
@@ -35,10 +40,16 @@ Changes current directory to a specified directory
 ### newdir 
 Creates a new directory with a given name
 - usage:
-  - makedir \<dirname>
+  - newdir \<dirname>
 - errors:
   - directory with that name exists
 ### clear
 Clears terminal
 - usage:
   - clear
+### show
+Displays files and sub-directories in current directory
+### help
+Displays directions on how to use commands
+- usage:
+  - help \<command> ```(optional)```

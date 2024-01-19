@@ -70,7 +70,10 @@ class System():
         paths = folder.split('/')
         for i in range(len(paths)):
             if paths[i] == '..':
-                self.currPath.pop()
+                if len(self.currPath) == 0:
+                    print("You are in the root directory")
+                else:
+                    self.currPath.pop()
                 if len(paths) > 1:
                     newFolder = '/'.join(paths[i+1:])
                     return self.goto(newFolder)
@@ -98,7 +101,7 @@ class System():
             else:
                 tree['content'][path[0]+'_folder']['content'].pop(name+'_file')
         else:
-            self.addFile(name=name,path=path[1:],tree=tree['content'][path[0]+'_folder'])
+            self.delFile(name=name,path=path[1:],tree=tree['content'][path[0]+'_folder'])
         a_file = open("files.json", "w")
         json.dump(self.files, a_file)
         a_file.close()
@@ -114,7 +117,23 @@ class System():
             else:
                 tree['content'][path[0]+'_folder']['content'].pop(name+'_folder')
         else:
-            self.addFile(name=name,path=path[1:],tree=tree['content'][path[0]+'_folder'])
+            self.delFolder(name=name,path=path[1:],tree=tree['content'][path[0]+'_folder'])
+        a_file = open("files.json", "w")
+        json.dump(self.files, a_file)
+        a_file.close()
+    def content(self,name,path,tree):
+        if len(path) == 0:
+            if name+'_file' not in tree['content'] or tree['content'][name+'_file']['type'] != 'File':
+                print("File does not exist exists")
+            else:
+                print(tree['content'][name+'_file']['content'])
+        elif len(path) == 1:
+            if name+'_file' not in tree['content'][path[0]+'_folder']['content'] or tree['content'][path[0]+'_folder']['content'][name+'_file']['type'] != 'File':
+                print("File does not exists")
+            else:
+                print(tree['content'][path[0]+'_folder']['content'][name+'_file']['content'])
+        else:
+            self.content(name=name,path=path[1:],tree=tree['content'][path[0]+'_folder'])
         a_file = open("files.json", "w")
         json.dump(self.files, a_file)
         a_file.close()
@@ -150,19 +169,24 @@ class System():
                     
                 else:
                     if parts[0] == 'newfile':
-                        if len(parts) > 3 or len(parts) <  2:
+                        if len(parts) <  2:
                             print("Invalid usage of command")
                         else:
                             if len(parts) == 2:
                                 content = ''
                             else:
-                                content = parts[2]
+                                content = " ".join(parts[2:])
                             self.addFile(parts[1],self.currPath,self.files,content)
                     elif parts[0] == 'delfile':
                         if len(parts)!=  2:
                             print("Invalid usage of command")
                         else:
                             self.delFile(parts[1],self.currPath,self.files)
+                    elif parts[0] == 'deldir':
+                        if len(parts)!=  2:
+                            print("Invalid usage of command")
+                        else:
+                            self.delFolder(parts[1],self.currPath,self.files)
                     elif parts[0] == 'newdir':
                         if len(parts) != 2:
                             print("Invalid usage of command")
@@ -191,3 +215,8 @@ class System():
                                 print("Invalid command")
                             else:
                                 print(commands[parts[1]])
+                    elif parts[0] == 'print':
+                        if len(parts) != 2:
+                            print("Invalid usage of command")
+                        else:
+                            self.content(parts[1],self.currPath,self.files)
