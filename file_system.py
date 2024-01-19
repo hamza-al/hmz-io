@@ -86,8 +86,38 @@ class System():
                     print(f'{paths[i]} does not exist in {"/" + "/".join(self.currPath)}')
                 else:
                     self.currPath.append(paths[i])
-    def delFile(self,file):
-        pass
+    def delFile(self,name,path,tree):
+        if len(path) == 0:
+            if name+'_file' not in tree['content'] or tree['content'][name+'_file']['type'] != 'File':
+                print("File does not exist exists")
+            else:
+                tree['content'].pop(name+'_file')
+        elif len(path) == 1:
+            if name+'_file' not in tree['content'][path[0]]['content'] or tree['content'][path[0]]['content'][name+'_file']['type'] != 'File':
+                print("File does not exists")
+            else:
+                tree['content'][path[0]]['content'].pop(name+'_file')
+        else:
+            self.addFile(name=name,path=path[1:],tree=tree['content'][path[0]])
+        a_file = open("files.json", "w")
+        json.dump(self.files, a_file)
+        a_file.close()
+    def delFolder(self,name,path,tree):
+        if len(path) == 0:
+            if name+'_folder' not in tree['content'] or tree['content'][name+'_folder']['type'] != 'Folder':
+                print("Folder does not exist exists")
+            else:
+                tree['content'].pop(name+'_folder')
+        elif len(path) == 1:
+            if name+'_folder' not in tree['content'][path[0]]['content'] or tree['content'][path[0]]['content'][name+'_folder']['type'] != 'Folder':
+                print("Folder does not exists")
+            else:
+                tree['content'][path[0]]['content'].pop(name+'_folder')
+        else:
+            self.addFile(name=name,path=path[1:],tree=tree['content'][path[0]])
+        a_file = open("files.json", "w")
+        json.dump(self.files, a_file)
+        a_file.close()
     def run(self):
         while True:
             if len(self.currPath) > 0:
@@ -104,6 +134,8 @@ class System():
                     'quit' : "Exit hmz-io --usage: quit",
                     'newfile':"Create new file --usage: newfile <file_name> <file_content> (optional)",
                     'newdir':"Create new directory --usage: newdir <dir_name>",
+                    'delfile': "Deletes a file with a given name --usage: delfile <file_name>",
+                    'deldir': "Deletes a directory  with a given name --usage: deldir <dir_name>",
                     'goto':"Navigate to target directory --usage: goto <dir_name> ",
                     'show':"Show contents of current working directory --usage: show",
                     'clear':"Clear terminal --usage: clear",
@@ -126,6 +158,11 @@ class System():
                             else:
                                 content = parts[2]
                             self.addFile(parts[1],self.currPath,self.files,content)
+                    elif parts[0] == 'delfile':
+                        if len(parts)!=  2:
+                            print("Invalid usage of command")
+                        else:
+                            self.delFile(parts[1],self.currPath,self.files)
                     elif parts[0] == 'newdir':
                         if len(parts) != 2:
                             print("Invalid usage of command")
