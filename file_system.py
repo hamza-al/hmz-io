@@ -30,15 +30,15 @@ class System():
         return distances
     def addFile(self,name,path,tree,content=''):
         if len(path) == 0:
-            if name in tree['content'] and tree['content'][name]['type'] == 'File':
+            if name+'_file' in tree['content'] and tree['content'][name]['type'] == 'File':
                 print("File already exists")
             else:
-                tree['content'][name] = {"content":content,'type':"File"}
+                tree['content'][name+'_file'] = {"content":content,'type':"File"}
         elif len(path) == 1:
-            if name in tree['content'][path[0]]['content'] and tree['content'][path[0]]['content'][name]['type'] == 'File':
+            if name+'_file' in tree['content'][path[0]]['content'] and tree['content'][path[0]]['content'][name]['type'] == 'File':
                 print("File already exists")
             else:
-                tree['content'][path[0]]['content'][name] = {"content":content,'type':"File"}
+                tree['content'][path[0]]['content'][name+'_file'] = {"content":content,'type':"File"}
         else:
             self.addFile(name=name,content=content,path=path[1:],tree=tree['content'][path[0]])
         a_file = open("files.json", "w")
@@ -46,15 +46,15 @@ class System():
         a_file.close()
     def addFolder(self,name,path,tree):
         if len(path) == 0:
-            if name in tree['content'] and tree['content'][name]['type'] == 'Folder':
+            if name+'_folder' in tree['content'] and tree['content'][name]['type'] == 'Folder':
                 print("Folder already exists")
             else:
-                tree['content'][name] = {"content":{},'type':"Folder"}
+                tree['content'][name+'_folder'] = {"content":{},'type':"Folder"}
         elif len(path) == 1:
-            if name in tree['content'][path[0]]['content'] and tree['content'][path[0]]['content'][name]['type'] == 'Folder':
+            if name+'_folder' in tree['content'][path[0]]['content'] and tree['content'][path[0]]['content'][name]['type'] == 'Folder':
                 print("Folder already exists")
             else:
-                tree['content'][path[0]]['content'][name] = {"content":{},'type':"Folder"}
+                tree['content'][path[0]]['content'][name+'_folder'] = {"content":{},'type':"Folder"}
         else:
             self.addFile(name=name,path=path[1:],tree=tree['content'][path[0]])
         a_file = open("files.json", "w")
