@@ -9,7 +9,25 @@ class System():
     def __pretty(self):
         json_formatted_str = json.dumps(self.files, indent=2)
         print(json_formatted_str)
+    def correction(self,word,options):
+        def lev(a,b):
+            if len(a) == 0:
+                return len(b)
+            elif len(b) == 0:
+                return len(a)
+            elif a[0] == b[0]:
+                return lev(a[1:],b[1:])
+            else:
+                return 1 + min([lev(a[1:],b),lev(a,b[1:]),lev(a[1:],b[1:])])
+        distances = {
 
+        }   
+        for i in options:
+            d = lev(word,i)
+            if d not in distances:
+                distances[d] = []
+            distances[d].append(i)
+        return distances
     def addFile(self,name,path,tree,content=''):
         if len(path) == 0:
             if name in tree['content'] and tree['content'][name]['type'] == 'File':
@@ -83,6 +101,7 @@ class System():
                 parts = cmd.split(' ')
                 parts = list(filter(lambda a: a !="",parts ))
                 commands = {
+                    'quit' : "Exit hmz-io --usage: quit",
                     'newfile':"Create new file --usage: newfile <file_name> <file_content> (optional)",
                     'newdir':"Create new directory --usage: newdir <dir_name>",
                     'goto':"Navigate to target directory --usage: goto <dir_name> ",
@@ -93,7 +112,10 @@ class System():
                 }
                 
                 if parts[0] not in commands:
-                    print('Invalid command')
+                    distances = self.correction(parts[0],commands.keys())
+                    shortest = min(distances.keys())
+                    print(f'{parts[0]} is not a command, do you mean:\n{", ".join(distances[shortest])}')
+                    
                 else:
                     if parts[0] == 'newfile':
                         if len(parts) > 3 or len(parts) <  2:
@@ -125,14 +147,10 @@ class System():
                         if len(parts) > 2:
                             print("Invalid usage of command")
                         elif len(parts) == 1:
-                                print(commands['help'])
+                                for i in commands:
+                                    print(f' \n{i}: { commands[i]}')
                         else:
                             if parts[1] not in commands:
                                 print("Invalid command")
                             else:
                                 print(commands[parts[1]])
-
-                    
-                    
-
-
