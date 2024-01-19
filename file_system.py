@@ -65,7 +65,7 @@ class System():
         for j in self.currPath:
             active = active[j]['content']
         for i in active:
-            print(f"Name: {i} --- Type: {active[i]['type']} ")
+            print(f"Name: {i[:-5] if active[i]['type'] == 'File' else i[:-7]} --- Type: {active[i]['type']} ")
     def goto(self, folder):
         paths = folder.split('/')
         for i in range(len(paths)):
