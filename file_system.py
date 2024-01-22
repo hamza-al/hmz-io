@@ -137,6 +137,11 @@ class System():
         a_file = open("files.json", "w")
         json.dump(self.files, a_file)
         a_file.close()
+    def pwd(self):
+        if self.currPath == []:
+            print('/')
+        else:
+            print('/' + '/'.join(self.currPath))
     def run(self):
         while True:
             if len(self.currPath) > 0:
@@ -159,7 +164,8 @@ class System():
                     'show':"Show contents of current working directory --usage: show",
                     'clear':"Clear terminal --usage: clear",
                     'help': "Displays command definition and usage --usage: help <command>",
-                    'print': "Displays the content of a file -- usage: print <file)name> "
+                    'print': "Displays the content of a file -- usage: print <file)name> ",
+                    'current': "Displays the current working directory --usage: current",
                 }
                 
                 if parts[0] not in commands:
@@ -220,3 +226,8 @@ class System():
                             print("Invalid usage of command")
                         else:
                             self.content(parts[1],self.currPath,self.files)
+                    elif parts[0] == 'current':
+                        if len(parts) != 1:
+                            print("Invalid usage of command")
+                        else:
+                            self.pwd()
