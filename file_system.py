@@ -148,7 +148,7 @@ class System():
                 cmd = input( self.currPath[-1] + " % " )
             else:
                 cmd = input( '~ % '  )
-            if cmd in ['q','Q','quit']:
+            if cmd in ['q','Q','quit','exit']:
                 break   
             else:
                 
